@@ -1,0 +1,123 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    Lista de Tareas 
+{% endblock title %}
+    
+{% block content %}
+{% include 'includes/header.html' %}
+
+<div class="container-fluid">
+    <!-- Titulo  -->
+    <div class=" text-center mt-3 mb-3">
+        <h1 class="fs-1">Lista de todas las tareas</h1>
+    </div>
+
+    <!-- Boton nueva tarea -->
+    <div class="container text-start mb-3">
+        <button type="button" class="btn btn-success">
+            <a class="link-offset-2 link-underline link-underline-opacity-0 text-white" href="{% url 'tareas_app:nueva_tarea' %}">Agregar nueva tarea</a>
+        </button>
+    </div>
+
+    <!-- Lista de tareas y formulario de filtros  -->
+    <div class="container">
+        <div class="row">
+            <div class="col-9">
+                <!-- inicio tabla con lista de tareas  -->
+                <table class="table table-striped table-responsive align-middle text-center">
+                    <thead>
+                        <tr>
+                            <th class="fs-5">Título</th>
+                            <th class="fs-5">Fecha</th>
+                            <th class="fs-5">Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for t in tareas %}
+                        <tr>
+                            <td> {{ t.titulo }} </td>
+                            <td> {{ t.fecha }} </td>
+                            <td>
+                                <a href="{% url 'tareas_app:detalle_tarea' t.id %}" class="btn btn-primary btn-sm" tabindex="-1" role="button" aria-disabled="true">Detalle</a>
+                                <a href="{% url 'tareas_app:eliminar_tarea' t.id %}" class="btn btn-danger btn-sm" tabindex="-1" role="button" aria-disabled="true">Eliminar</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <!-- fin tabla con lista de tareas  -->
+            </div>
+
+            <!-- Formulario de filtros  -->
+            <div class="col-3">
+                <div>
+                    <form action="{% url 'tareas_app:lista_tareas' %}"  method="get">
+                        
+                        <!-- Filtro por categoria  -->
+                        <div class="border border-black p-2 m-2 rounded-4 text-center">
+                            <p>Categorías</p>
+                            <select class="form-select form-select-sm text-center" aria-label="Default select example" name="cate" id="cate">
+                                <option value="" {% if request.GET.cate == "" %}selected{% endif %}>---</option>
+                                {% for c in categorias %}
+                                <option value="{{ c.id }}" {% if request.GET.cate == c.id|stringformat:"s" %}selected{% endif %}> {{ c.categoria }} </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <!-- Entre fechas  -->
+                        <div class="border border-black p-2 m-2 rounded-4 text-center">
+                            <p>Entre fechas</p>
+                            <input class="form-control form-control-sm mt-1 text-center" type="date" name="fechaInicio" id="fechaInicio" value="{{ request.GET.fechaInicio }}">
+                            <input class="form-control form-control-sm mt-1 text-center" type="date" name="fechaFin" id="fechaFin" value="{{ request.GET.fechaFin }}">
+                        </div>
+
+                        <div class="text-center p-2 m-2">
+                            <button type="submit" class="btn btn-success">Filtrar</button>
+                            <a href="{% url 'tareas_app:lista_tareas' %}" class="btn btn-primary">Limpiar</a>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- inicio paginación -->
+    {% if is_paginated %}
+    <nav class="mt-4" aria-label="...">
+        <ul class="pagination justify-content-center">
+            <!-- Anterior  -->
+            {% if page_obj.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.previous_page_number }}&orden={{ request.GET.orden }}&cate={{ request.GET.cate }}&fechaInicio={{ request.GET.fechaInicio }}&fechaFin={{ request.GET.fechaFin }}">Anterior</a>
+            </li>
+            {% endif %}
+                
+            <!-- Actual + lista  -->
+            {% for pag in paginator.page_range %}
+                {% if pag == page_obj.number %}
+                    <li class="page-item active" aria-current="page">
+                        <a class="page-link" href="?page={{ pag }}&orden={{ request.GET.orden }}&cate={{ request.GET.cate }}&fechaInicio={{ request.GET.fechaInicio }}&fechaFin={{ request.GET.fechaFin }}"> {{ pag }} </a>
+                    </li>
+                {% else %}
+                    <li class="page-item"><a class="page-link" href="?page={{ pag }}&orden={{ request.GET.orden }}&cate={{ request.GET.cate }}&fechaInicio={{ request.GET.fechaInicio }}&fechaFin={{ request.GET.fechaFin }}"> {{ pag }} </a></li>
+                {% endif %}
+            {% endfor %}
+                
+            <!-- Siguiente  -->
+            {% if page_obj.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.next_page_number }}&orden={{ request.GET.orden }}&cate={{ request.GET.cate }}&fechaInicio={{ request.GET.fechaInicio }}&fechaFin={{ request.GET.fechaFin }}">Siguiente</a>
+            </li>
+            {% endif %}
+        </ul>
+    </nav>
+    {% endif %}
+    <!-- fin paginación -->
+
+</div>
+
+{% endblock content %}

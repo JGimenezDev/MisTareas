@@ -1,0 +1,26 @@
+{% load static %}
+
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container-fluid bg-danger-subtle">
+        <a class="navbar-brand text.danger p-2" href="{% url 'tareas_app:home' %}">
+            <img src="{% static 'img/tarea.png' %}" alt="Logo" width="25" height="25" class="d-inline-block align-text-center">Mis Tareas
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active link-dark text-primary" aria-current="page" href="{% url 'tareas_app:lista_tareas' %}">Lista de Tareas</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active link-dark text-primary" aria-current="page" href="{% url 'tareas_app:nueva_tarea' %}">Nueva Tarea</a>
+                </li>
+            </ul>
+            <form method="get" action="{% url 'tareas_app:lista_tareas' %}" class="d-flex m-2" role="search">
+                <input class="form-control me-2" type="search" placeholder="Título o descripción..." aria-label="Search" name="buscar" id="buscar">
+                <button class="btn btn-outline-success" type="submit">Buscar</button>
+            </form>
+        </div>
+    </div>
+</nav>

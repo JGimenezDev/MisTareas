@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    Detalle de tarea 
+{% endblock title %}
+    
+{% block content %}
+{% include 'includes/header.html' %}
+
+<div class="container container-fluid">
+
+    <div class="fs-1 text-center"> {{ tarea.titulo }} </div>
+
+    <!-- datos de la tarea  -->
+    <div class="container text-center">
+        <div class="row gy-3 mt-3 justify-content-center">
+            
+            {% if tarea.descripcion != '' %}
+            <div class="col-8 p-3 rounded-pill bg-primary" style="height: 100px;">
+                <h4>Descripción</h4>
+                <p class="text-white">{{ tarea.descripcion }}</p>
+            </div>
+            {% endif %}
+
+            <div class="col-8 p-3 rounded-pill bg-secondary" style="height: 100px;">
+                <h4>Fecha</h4>
+                <p class="text-white">{{ tarea.fecha }}</p>
+            </div>
+            
+            <div class="col-8 p-3 rounded-pill bg-danger" style="height: 100px;">
+                <h4>Prioridad</h4>
+                <p class="text-white">{{ tarea.get_prioridad_display }}</p>
+            </div>
+            
+            {% if tarea.categoria != None %}
+            <div class="col-8 p-3 rounded-pill bg-success" style="height: 100px;">
+                <h4>Categoría</h4>
+                <p class="text-white"> {{ tarea.categoria.categoria }} </p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- botones  -->
+    <div class="container text-center mt-5">
+        <button type="button" class="btn btn-primary shadow">
+            <a class="link-offset-2 link-underline link-underline-opacity-0 text-white" href="{% url 'tareas_app:editar_tarea' tarea.id %}">Editar</a>
+        </button>
+        <button type="button" class="btn btn-primary shadow">
+            <a class="link-offset-2 link-underline link-underline-opacity-0 text-white" href="{% url 'tareas_app:eliminar_tarea' tarea.id %}">Eliminar</a>
+        </button>
+    </div>
+
+</div>
+
+{% endblock content %}

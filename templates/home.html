@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    Home
+{% endblock title %}
+    
+{% block content %}
+{% include 'includes/header.html' %}
+
+<!-- inicio imagen de portada -->
+<div id="carouselExample" class="carousel slide">
+    <div class="carousel-inner">
+        <div class="carousel-item active">
+            <img src="{% static 'img/principal.jpg' %}" class="d-block w-100" height="600px" style="object-fit: cover;" alt="Portada">
+        </div>
+    </div>
+</div>
+<!-- fin imagen de portada -->
+
+<!-- titulo de la pagina -->
+<div class="container text-center mt-5 mb-3">
+    <h1 class="fs-1 text-dark">Todas tus tareas Aquí</h1>
+</div>
+<!-- fin titulo  -->
+
+<!-- contenido principal de la pagina  -->
+<div class="container text-center mb-3">
+    <div class="row">
+        <!-- tareas recientes  -->
+        <div class="col-3 rounded-4 bg-warning p-3">
+            <h3>Próximas tareas</h3>
+            <table class="table table-warning table-striped align-middle text-center">
+                <thead>
+                    <tr>
+                        <th scope="col">Título</th>
+                        <th scope="col">Fecha</th>
+                    </tr>
+                </thead>
+                <tbody class="table-group-divider">
+                    {% for t in ultimas_tareas %}
+                    <tr>
+                        <td>{{ t.titulo }}</td>
+                        <td>{{ t.fecha }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- carrusel -->
+        <div class="col-6">
+            <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner rounded-4">
+                    <div class="carousel-item active" data-bs-interval="4000">
+                        <img src="{% static 'img/toma_nota.jpg' %}" class="d-block w-100">
+                    </div>
+                    <div class="carousel-item" data-bs-interval="4000">
+                        <img src="{% static 'img/toma_nota1.jpg' %}" class="d-block w-100">
+                    </div>
+                    <div class="carousel-item" data-bs-interval="4000">
+                        <img src="{% static 'img/toma_nota2.jpg' %}" class="d-block w-100">
+                    </div>
+                    <div class="carousel-item" data-bs-interval="4000">
+                        <img src="{% static 'img/toma_nota3.jpg' %}" class="d-block w-100">
+                    </div>
+                    <div class="carousel-item" data-bs-interval="4000">
+                        <img src="{% static 'img/toma_nota4.jpg' %}" class="d-block w-100">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- tareas completadas  -->
+        <div class="col-3 rounded-4 bg-danger p-3">
+            <h3 class="mb-4 text-white">Tareas completadas</h3>
+            {% for c in completadas %}
+                <p class="bg-danger-subtle rounded-5"><b> {{ c.titulo }} </b> <br> <i>({{ c.fecha }})</i></p>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+<!-- fin contenido principal  -->
+    
+
+
+{% endblock content %}
+    
